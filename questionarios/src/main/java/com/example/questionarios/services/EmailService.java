@@ -9,13 +9,12 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    // Injeta o JavaMailSender configurado automaticamente pelo Spring Boot
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
     public void enviarEmailRedefinicao(String destinatario, String token) {
-        String linkRedefinicao = "http://localhost:5173/resetpassword?token=" + token;
+        String linkRedefinicao = "http://localhost:5173/nova-senha?token=" + token;
 
         SimpleMailMessage mensagem = new SimpleMailMessage();
         mensagem.setTo(destinatario);

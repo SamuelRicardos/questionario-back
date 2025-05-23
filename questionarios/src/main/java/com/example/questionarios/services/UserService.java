@@ -44,4 +44,26 @@ public class UserService {
 
         return tokenService.generateToken(user);
     }
+
+    public boolean resetPassword(String token, String newPassword) {
+        // Usar método correto para validar token e pegar email
+        String userEmail = tokenService.validateToken(token);
+
+        if (userEmail == null) {
+            return false; // token inválido
+        }
+
+        var userOptional = userRepository.findByEmail(userEmail);
+        if (userOptional.isEmpty()) {
+            return false; // usuário não encontrado
+        }
+
+        User user = userOptional.get();
+        user.setSenha(passwordEncoder.encode(newPassword)); // ajustar para setSenha
+        userRepository.save(user);
+
+        // Se quiser implementar invalidateToken, será outra lógica, mas não tem no seu TokenService ainda.
+
+        return true;
+    }
 }

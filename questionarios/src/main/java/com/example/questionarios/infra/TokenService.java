@@ -43,6 +43,26 @@ public class TokenService {
         }
     }
 
+    public String generateResetPasswordToken(String email) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            String token = JWT.create()
+                    .withIssuer("login-auth-api")
+                    .withSubject(email)
+                    .withExpiresAt(generateResetExpirationDate())
+                    .sign(algorithm);
+            return token;
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("Erro ao gerar token de redefinição");
+        }
+    }
+
+    private Instant generateResetExpirationDate() {
+        // Token válido por 1 hora
+        return LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("-03:00"));
+    }
+
+
     private Instant generateExpirationDate() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
