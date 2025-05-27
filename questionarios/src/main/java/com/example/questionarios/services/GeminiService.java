@@ -66,10 +66,13 @@ public class GeminiService {
         String prompt = "Gere uma pergunta de múltipla escolha sobre Python no tópico '" + topico + "'. " +
                 "Responda exatamente neste formato JSON:\n" +
                 "{\n" +
-                "  \"question\": \"...\",\n" +
-                "  \"options\": [\"...\", \"...\", \"...\", \"...\"],\n" +
-                "  \"correctAnswer\": \"...\"\n" +
-                "}";
+                "  \"questao\": \"...\",\n" +
+                "  \"opcoes\": [\"...\", \"...\", \"...\", \"...\"],\n" +
+                "  \"questaoCorreta\": \"...\",\n" +
+                "  \"explicacao\": \"...\"\n" +
+                "}\n" +
+                "A explicação deve justificar por que a resposta correta está certa.";
+
 
         // Escapar aspas e quebras de linha
         String promptEscapado = prompt
