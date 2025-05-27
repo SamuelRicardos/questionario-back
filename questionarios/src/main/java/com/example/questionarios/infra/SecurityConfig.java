@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/nova-senha").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/profile").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/email/redefinir-senha").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/perguntas/gerar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/perguntas/gerar").permitAll()

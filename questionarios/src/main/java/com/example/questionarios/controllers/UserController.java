@@ -3,14 +3,12 @@ package com.example.questionarios.controllers;
 import com.example.questionarios.dto.AuthDTO;
 import com.example.questionarios.dto.NovaSenhaDTO;
 import com.example.questionarios.dto.UserDTO;
+import com.example.questionarios.dto.UserProfileDTO;
 import com.example.questionarios.models.User;
 import com.example.questionarios.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 
@@ -44,5 +42,11 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body("Token inválido ou expirado.");
         }
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileDTO> getProfile(@RequestParam String email) {
+        UserProfileDTO profile = userService.getUserProfile(email);
+        return ResponseEntity.ok(profile);
     }
 }

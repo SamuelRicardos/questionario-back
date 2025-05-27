@@ -1,13 +1,19 @@
 package com.example.questionarios.services;
 
 import com.example.questionarios.dto.AuthDTO;
+import com.example.questionarios.dto.CategoriaDesempenhoDTO;
 import com.example.questionarios.dto.UserDTO;
+import com.example.questionarios.dto.UserProfileDTO;
 import com.example.questionarios.infra.TokenService;
+import com.example.questionarios.models.CategoriaDesempenho;
 import com.example.questionarios.models.User;
 import com.example.questionarios.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -55,15 +61,24 @@ public class UserService {
 
         var userOptional = userRepository.findByEmail(userEmail);
         if (userOptional.isEmpty()) {
-            return false; // usuário não encontrado
+            return false;
         }
 
         User user = userOptional.get();
-        user.setSenha(passwordEncoder.encode(newPassword)); // ajustar para setSenha
+        user.setSenha(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
-        // Se quiser implementar invalidateToken, será outra lógica, mas não tem no seu TokenService ainda.
-
         return true;
+    }
+
+    public UserProfileDTO getUserProfile(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        var desempenhos = user.getDesempenhos().stream()
+                .map(d -> new CategoriaDesempenhoDTO(d.getCategoria(), d.getAcertos(), d.getErros()))
+                .collect(Collectors.toList());
+
+        return new UserProfileDTO(user.getNome(), user.getEmail(), desempenhos);
     }
 }

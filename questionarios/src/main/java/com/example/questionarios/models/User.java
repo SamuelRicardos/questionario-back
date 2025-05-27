@@ -2,6 +2,7 @@ package com.example.questionarios.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +18,10 @@ public class User {
     private String email;
     @Column(unique = true, nullable = false)
     private String senha;
+
+    // Relação com CategoriaDesempenho: um usuário tem muitos desempenhos
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CategoriaDesempenho> desempenhos;
 
     public Long getId_usuario() {
         return id_usuario;
@@ -48,6 +53,14 @@ public class User {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public List<CategoriaDesempenho> getDesempenhos() {
+        return desempenhos;
+    }
+
+    public void setDesempenhos(List<CategoriaDesempenho> desempenhos) {
+        this.desempenhos = desempenhos;
     }
 
     @Override
