@@ -21,9 +21,12 @@ public class PerguntaController {
     }
 
     @GetMapping("/gerar")
-    public ResponseEntity<PerguntaDTO> gerarPergunta(@RequestParam String topico) {
+    public ResponseEntity<PerguntaDTO> gerarPergunta(
+            @RequestParam String linguagem,
+            @RequestParam String topico
+    ) {
         try {
-            PerguntaDTO pergunta = geminiService.gerarPerguntaSobrePython(topico);
+            PerguntaDTO pergunta = geminiService.gerarPergunta(linguagem, topico);
             return ResponseEntity.ok(pergunta);
         } catch (Exception e) {
             logger.error("Erro ao gerar pergunta", e);

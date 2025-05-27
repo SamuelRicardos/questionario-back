@@ -26,8 +26,8 @@ public class GeminiService {
         }
     }
 
-    public PerguntaDTO gerarPerguntaSobrePython(String topico) throws Exception {
-        String requestBody = buildRequestBody(topico);
+    public PerguntaDTO gerarPergunta(String linguagem, String topico) throws Exception {
+        String requestBody = buildRequestBody(linguagem, topico);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL + "?key=" + API_KEY))
@@ -41,7 +41,6 @@ public class GeminiService {
         System.out.println("Resposta da API Gemini: " + response.body());
 
         JsonNode root = objectMapper.readTree(response.body());
-
         JsonNode candidatesNode = root.path("candidates");
         if (!candidatesNode.isArray() || candidatesNode.isEmpty()) {
             throw new RuntimeException("Resposta da API sem 'candidates' ou array vazio");
@@ -61,8 +60,9 @@ public class GeminiService {
         return objectMapper.readValue(jsonString, PerguntaDTO.class);
     }
 
-    private static String buildRequestBody(String topico) {
-        String prompt = "Gere uma pergunta de múltipla escolha sobre uma linguagem de programação do tópico '" + topico + "'. " +
+    private static String buildRequestBody(String linguagem, String topico) {
+        String prompt = "Gere uma pergunta de múltipla escolha sobre a linguagem de programação '" + linguagem +
+                "' com foco no tópico '" + topico + "'. " +
                 "Responda exatamente neste formato JSON:\n" +
                 "{\n" +
                 "  \"questao\": \"...\",\n" +
@@ -72,23 +72,21 @@ public class GeminiService {
                 "}\n" +
                 "A explicação deve justificar por que a resposta correta está certa.";
 
-
-        // Escapar aspas e quebras de linha
         String promptEscapado = prompt
                 .replace("\\", "\\\\")
                 .replace("\"", "\\\"")
                 .replace("\n", "\\n");
 
         return """
+    {
+      "contents": [
         {
-          "contents": [
-            {
-              "parts": [
-                { "text": "%s" }
-              ]
-            }
+          "parts": [
+            { "text": "%s" }
           ]
         }
-        """.formatted(promptEscapado);
+      ]
+    }
+    """.formatted(promptEscapado);
     }
 }
