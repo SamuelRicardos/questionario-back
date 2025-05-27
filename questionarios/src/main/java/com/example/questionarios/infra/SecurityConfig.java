@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/email/redefinir-senha").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/perguntas/gerar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/perguntas/gerar").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/desempenho/atualizar").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )

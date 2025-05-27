@@ -1,9 +1,6 @@
 package com.example.questionarios.services;
 
-import com.example.questionarios.dto.AuthDTO;
-import com.example.questionarios.dto.CategoriaDesempenhoDTO;
-import com.example.questionarios.dto.UserDTO;
-import com.example.questionarios.dto.UserProfileDTO;
+import com.example.questionarios.dto.*;
 import com.example.questionarios.infra.TokenService;
 import com.example.questionarios.models.CategoriaDesempenho;
 import com.example.questionarios.models.User;
@@ -40,7 +37,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String login(AuthDTO dto) {
+    public LoginResponseDTO login(AuthDTO dto) {
         User user = userRepository.findByEmail(dto.email())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
@@ -48,7 +45,8 @@ public class UserService {
             throw new RuntimeException("Credenciais inválidas");
         }
 
-        return tokenService.generateToken(user);
+        String token = tokenService.generateToken(user);
+        return new LoginResponseDTO(token, user.getEmail());
     }
 
     public boolean resetPassword(String token, String newPassword) {

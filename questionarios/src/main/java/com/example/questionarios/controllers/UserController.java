@@ -1,9 +1,6 @@
 package com.example.questionarios.controllers;
 
-import com.example.questionarios.dto.AuthDTO;
-import com.example.questionarios.dto.NovaSenhaDTO;
-import com.example.questionarios.dto.UserDTO;
-import com.example.questionarios.dto.UserProfileDTO;
+import com.example.questionarios.dto.*;
 import com.example.questionarios.models.User;
 import com.example.questionarios.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +22,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthDTO dto) {
-        String token = userService.login(dto);
-        return ResponseEntity.ok(Collections.singletonMap("token", token));
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody AuthDTO dto) {
+        LoginResponseDTO response = userService.login(dto);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/nova-senha")
