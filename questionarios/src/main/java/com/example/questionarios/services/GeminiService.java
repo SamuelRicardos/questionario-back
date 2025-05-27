@@ -55,7 +55,6 @@ public class GeminiService {
 
         String jsonString = partsNode.get(0).path("text").asText();
 
-        // Remove marcações ```json
         jsonString = jsonString.replaceFirst("^```json\\s*", "").replaceFirst("\\s*```$", "");
         jsonString = jsonString.replaceFirst("^```\\s*", "").replaceFirst("\\s*```$", "");
 
@@ -63,7 +62,7 @@ public class GeminiService {
     }
 
     private static String buildRequestBody(String topico) {
-        String prompt = "Gere uma pergunta de múltipla escolha sobre Python no tópico '" + topico + "'. " +
+        String prompt = "Gere uma pergunta de múltipla escolha sobre uma linguagem de programação do tópico '" + topico + "'. " +
                 "Responda exatamente neste formato JSON:\n" +
                 "{\n" +
                 "  \"questao\": \"...\",\n" +
