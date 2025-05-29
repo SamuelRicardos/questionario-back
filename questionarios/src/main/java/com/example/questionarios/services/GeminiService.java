@@ -61,8 +61,10 @@ public class GeminiService {
     }
 
     private static String buildRequestBody(String linguagem, String topico) {
-        String prompt = "Gere uma pergunta de múltipla escolha sobre a linguagem de programação '" + linguagem +
+        String prompt = "Gere uma pergunta inédita de múltipla escolha sobre a linguagem de programação '" + linguagem +
                 "' com foco no tópico '" + topico + "'. " +
+                "A pergunta **não deve ser uma repetição** de nenhuma pergunta anterior. " +
+                "Varie a estrutura da questão e o conteúdo para garantir originalidade. " +
                 "Responda exatamente neste formato JSON:\n" +
                 "{\n" +
                 "  \"questao\": \"...\",\n" +
@@ -70,7 +72,7 @@ public class GeminiService {
                 "  \"questaoCorreta\": \"...\",\n" +
                 "  \"explicacao\": \"...\"\n" +
                 "}\n" +
-                "A explicação deve justificar por que a resposta correta está certa.";
+                "A explicação deve justificar claramente por que a resposta correta está certa, de forma didática e objetiva.";
 
         String promptEscapado = prompt
                 .replace("\\", "\\\\")
@@ -78,15 +80,15 @@ public class GeminiService {
                 .replace("\n", "\\n");
 
         return """
+{
+  "contents": [
     {
-      "contents": [
-        {
-          "parts": [
-            { "text": "%s" }
-          ]
-        }
+      "parts": [
+        { "text": "%s" }
       ]
     }
-    """.formatted(promptEscapado);
+  ]
+}
+""".formatted(promptEscapado);
     }
 }
