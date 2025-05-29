@@ -19,7 +19,6 @@ public class User {
     @Column(unique = true, nullable = false)
     private String senha;
 
-    // Relação com CategoriaDesempenho: um usuário tem muitos desempenhos
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CategoriaDesempenho> desempenhos;
 

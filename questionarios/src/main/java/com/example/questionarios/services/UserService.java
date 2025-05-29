@@ -2,14 +2,11 @@ package com.example.questionarios.services;
 
 import com.example.questionarios.dto.*;
 import com.example.questionarios.infra.TokenService;
-import com.example.questionarios.models.CategoriaDesempenho;
 import com.example.questionarios.models.User;
 import com.example.questionarios.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,11 +47,10 @@ public class UserService {
     }
 
     public boolean resetPassword(String token, String newPassword) {
-        // Usar método correto para validar token e pegar email
         String userEmail = tokenService.validateToken(token);
 
         if (userEmail == null) {
-            return false; // token inválido
+            return false;
         }
 
         var userOptional = userRepository.findByEmail(userEmail);
