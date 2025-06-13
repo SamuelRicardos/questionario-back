@@ -1,23 +1,17 @@
-# Stage 1: Build do projeto com Maven
-FROM maven:3.8.5-openjdk-17 AS build
+FROM ubuntu:latest AS build
 
-WORKDIR /app
+RUN apt-get update
+RUN apt-get install openjdk-17-jdk -y
 
-# Copia o pom e o código fonte
-COPY pom.xml .
-COPY src ./src
+COPY . .
 
-# Faz o build e gera o jar
-RUN mvn clean package -DskipTests
+RUN apt-get install maven -y
+RUN mvn clean install
 
-# Stage 2: Imagem final para rodar o jar
 FROM openjdk:17-jdk-slim
-
-WORKDIR /app
-
-# Copia o jar do stage build para cá
-COPY --from=build /app/target/questionarios-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY --from=build /target/questionarios-0.0.1-SNAPSHOT.jar app.jar
+
+ENTRYPOINT [ "java", "-jar", "app.jar"]
