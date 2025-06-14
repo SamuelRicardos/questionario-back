@@ -3,7 +3,7 @@ services:
     name: questionario-back
     env: docker
     plan: free
-    region: oregon
+    region: ohio
     dockerfilePath: ./Dockerfile
     healthCheckPath: /actuator/health
     envVars:
